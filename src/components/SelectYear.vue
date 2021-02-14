@@ -30,7 +30,7 @@ export default class SelectYear extends Vue {
         }
     }
 
-    public mounted() {
+    public mounted(): void {
         this.yearModel = this.year;
         this.years.unshift(this.itemsModel);
     }

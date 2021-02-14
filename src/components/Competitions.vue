@@ -85,7 +85,7 @@ export default class Competition extends Vue {
 
       if (this.$route.query.search) {
           arrayRes = arrayRes.filter(com => {
-              const search: any = this.$route.query.search;
+              const search: string = String(this.$route.query?.search);
               return com.name.toLowerCase().includes(search.toLowerCase()) ||
           com.plan?.toLowerCase().includes(search.toLowerCase()) ||
           com.area?.name.toLowerCase().includes(search.toLowerCase());
@@ -95,7 +95,7 @@ export default class Competition extends Vue {
       return arrayRes;
   }
 
-  get competitionByYear() {
+  get competitionByYear(): string[] {
       const years: string[] = [];
       this.allCompetitions().filter((item: CompetitionInterface) => {
           const ye: string | undefined = item.currentSeason?.startDate.split('-')[0];

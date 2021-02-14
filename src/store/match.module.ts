@@ -11,7 +11,7 @@ export const matchModule: Module<MatchStateInterface, RootStateInterface> = {
         matches: []
     },
     getters: {
-        getMatchesByCompetitionId: (state: MatchStateInterface) => (competitionId: number): MatchInterface[] => {
+        getMatches: (state: MatchStateInterface) => (): MatchInterface[] => {
             return state.matches;
         }
     },

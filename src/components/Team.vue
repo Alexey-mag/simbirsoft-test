@@ -67,7 +67,7 @@ export default class Team extends Vue {
     @Action('requestCompetitionById', { namespace: 'competition' }) public requestCompetitionById!: (competitionId: number) => Promise<void>;
     @Action('requestTeamMatchesByYear', { namespace }) public requestTeamMatchesByYear!: (data: {teamId: number; year: string}) => Promise<void>;
     @Getter('getTeamById', { namespace }) public getTeamById!: (id: number) => TeamInterface;
-  @Getter('getLoaderTeams', { namespace }) public getLoaderTeams!: () => CompetitionInterface[];
+    @Getter('getLoaderTeams', { namespace }) public getLoaderTeams!: () => CompetitionInterface[];
     @Getter('getCompetitionById', { namespace: 'competition' }) public getCompetitionById!: (competitionId: number) => CompetitionInterface;
     @Watch('$route.query') watchParams(queryParams: Dictionary<string>) {
         this.requestTeamMatchesByYear({ teamId: +this.$route.params.teamId, year: queryParams.year });
@@ -77,11 +77,9 @@ export default class Team extends Vue {
         return this.getTeamById(+this.$route.params.teamId);
     }
 
-    get matchesByYear() {
+    get matchesByYear(): string[] {
         return (this.getCompetitionById(+this.$route.params.competitionId).seasons || []).map((season: SeasonInterface) => season.startDate.substr(0, 4));
     }
-
-    public tab: any;
 
     beforeMount(): void {
         const teamId: number = +this.$route.params.teamId;

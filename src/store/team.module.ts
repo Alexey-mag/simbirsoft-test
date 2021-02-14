@@ -7,7 +7,6 @@ import { AxiosResponse } from 'axios';
 import { PlayerInterface } from '../shared/interfaces/api/player.interface';
 import { hashMap, uniqueArray } from '../shared/helpers/unique.helper';
 import { MatchInterface } from '../shared/interfaces/api/match.interface';
-import { CompetitionStateInterface } from '../shared/interfaces/state/competition-state.interface';
 
 export const teamModule: Module<TeamStateInterface, RootStateInterface> = {
 

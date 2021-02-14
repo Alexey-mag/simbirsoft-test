@@ -58,8 +58,8 @@ export default class Matches extends Vue {
         { text: '', value: 'status' }
     ];
 
-    public getTeamLogo(teamId: number) {
-        const team = this.getTeamById(teamId);
+    public getTeamLogo(teamId: number): string {
+        const team: TeamInterface = this.getTeamById(teamId);
         return team?.crestUrl || '/ball.jpg';
     }
 

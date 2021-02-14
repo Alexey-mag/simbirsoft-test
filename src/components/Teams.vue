@@ -44,7 +44,7 @@ export default class Teams extends Vue {
         { text: 'Phone', value: 'phone' }
     ];
 
-    get teams() {
+    get teams(): TeamInterface[] {
         return this.getTeams(+this.$route.params.competitionId);
     }
 

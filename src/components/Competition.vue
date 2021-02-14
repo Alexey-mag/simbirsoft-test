@@ -87,49 +87,37 @@ const namespace: string = 'competition';
 })
 export default class Competition extends Vue {
     @Action('requestCompetitionById', { namespace }) public requestCompetitionById!: (competitionId: number) => Promise<void>;
-    @Action('requestCompetitionMatches', { namespace: 'match' }) public requestCompetitionMatches!: (data: {competitionId: number; year: string}) => Promise<void>;
+    @Action('requestCompetitionMatches', { namespace: 'match' }) public requestCompetitionMatches!: (data: { competitionId: number; year: string }) => Promise<void>;
     @Getter('getCompetitionById', { namespace }) public getCompetitionById!: (competitionId: number) => CompetitionInterface;
     @Getter('getLoaderCompetition', { namespace }) public getLoaderCompetition!: () => CompetitionInterface[];
-    @Getter('getMatchesByCompetitionId', { namespace: 'match' }) public getMatchesByCompetitionId!: (competitionId: number) => MatchInterface[];
+    @Getter('getMatches', { namespace: 'match' }) public getMatches!: () => MatchInterface[];
+
     @Watch('$route.query') watchParams(queryParams: Dictionary<string>) {
         this.requestCompetitionMatches({ competitionId: +this.$route.params.competitionId, year: queryParams.year });
     }
 
-  public isSeasons: boolean = false;
-  public allSeasons() {
-      this.isSeasons = !this.isSeasons;
-  }
+    get competition(): CompetitionInterface {
+        return this.getCompetitionById(+this.$route.params.competitionId);
+    }
 
-  get seasonButton() {
-      if (!this.isSeasons) {
-          return 'Open seasons';
-      } else {
-          return 'Close seasons';
-      }
-  }
+    get competitionMatches(): MatchInterface[] {
+        return this.getMatches();
+    }
 
-  get competition(): CompetitionInterface {
-      return this.getCompetitionById(+this.$route.params.competitionId);
-  }
+    get competitionByYear(): string[] {
+        return (this.competition?.seasons || []).map((season: SeasonInterface) => season.startDate.substr(0, 4));
+    }
 
-  get competitionMatches(): MatchInterface[] {
-      return this.getMatchesByCompetitionId(+this.$route.params.competitionId);
-  }
+    get seasons(): SeasonInterface[] {
+        return this.competition.seasons?.sort() || [];
+    }
 
-  get competitionByYear() {
-      return (this.competition?.seasons || []).map((season: SeasonInterface) => season.startDate.substr(0, 4));
-  }
-
-  get seasons() {
-      return this.competition.seasons?.sort();
-  }
-
-  public mounted(): void {
-      const competitionId: number = +this.$route.params.competitionId;
-      const year: string = this.$route.params.year || this.competition?.currentSeason?.startDate.substr(0, 4) || '';
-      this.requestCompetitionById(competitionId);
-      this.requestCompetitionMatches({ competitionId, year });
-  }
+    public mounted(): void {
+        const competitionId: number = +this.$route.params.competitionId;
+        const year: string = this.$route.params.year || this.competition?.currentSeason?.startDate.substr(0, 4) || '';
+        this.requestCompetitionById(competitionId);
+        this.requestCompetitionMatches({ competitionId, year });
+    }
 }
 </script>
 
